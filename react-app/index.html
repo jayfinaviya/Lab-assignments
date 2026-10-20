@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Lab Assignments (4, 5, 6)</title>
+  <!-- React & Babel CDNs for instant GitHub Pages execution -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f8;
+      color: #333333;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      color: #1e293b;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      border: 1px solid #cbd5e1;
+      background-color: #f1f5f9;
+      color: #475569;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .tab-btn.active {
+      background-color: #0066cc;
+      color: #ffffff;
+      border-color: #0066cc;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Assignment 4: Profile Card */
+    .profile-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      width: 260px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 2px solid #0066cc;
+    }
+
+    .profile-name {
+      font-size: 1.2rem;
+      color: #222222;
+      margin-bottom: 8px;
+    }
+
+    .profile-desc {
+      font-size: 0.9rem;
+      color: #666666;
+      line-height: 1.4;
+    }
+
+    /* Assignment 5: Controlled Form */
+    .controlled-form-wrapper {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      max-width: 450px;
+      margin: 0 auto;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .controlled-form-wrapper h2 {
+      font-size: 1.3rem;
+      color: #222222;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #666666;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .simple-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #0066cc;
+    }
+
+    .live-display {
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      text-align: left;
+    }
+
+    .live-display h3 {
+      font-size: 1rem;
+      color: #0066cc;
+      margin-bottom: 10px;
+    }
+
+    .live-display p {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #333333;
+    }
+
+    /* Assignment 6: Counter App */
+    .counter-wrapper {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .counter-wrapper h2 {
+      font-size: 1.3rem;
+      color: #222222;
+      margin-bottom: 6px;
+    }
+
+    .counter-display {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .count-value {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #0066cc;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn-counter {
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      font-weight: 500;
+      transition: background-color 0.15s;
+    }
+
+    .btn-dec {
+      background-color: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+
+    .btn-dec:hover {
+      background-color: #fecaca;
+    }
+
+    .btn-rst {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-rst:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-inc {
+      background-color: #dcfce7;
+      color: #16a34a;
+      border: 1px solid #86efac;
+    }
+
+    .btn-inc:hover {
+      background-color: #bbf7d0;
+    }
+
+    .footer {
+      padding: 20px;
+      text-align: center;
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .footer a {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // Component: ProfileCard (Assignment 4)
+    function ProfileCard(props) {
+      return (
+        <div className="profile-card">
+          <img src={props.imageUrl} alt={props.name} className="profile-img" />
+          <h3 className="profile-name">{props.name}</h3>
+          <p className="profile-desc">{props.description}</p>
+        </div>
+      );
+    }
+
+    function Assignment4() {
+      return (
+        <div style={{ textAlign: 'center' }}>
+          <h2>Assignment 4: React Profile Card using Props</h2>
+          <p className="subtitle">
+            Passes name, image URL, and description as props to a child component.
+          </p>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <ProfileCard
+              name="Jay Finaviya"
+              imageUrl="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+              description="MCA student and software developer interested in web development."
+            />
+            <ProfileCard
+              name="Alice Smith"
+              imageUrl="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80"
+              description="Frontend developer who loves building responsive web apps with React."
+            />
+          </div>
+        </div>
+      );
+    }
+
+    // Component: ControlledForm (Assignment 5)
+    function Assignment5() {
+      const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+      });
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+          ...prev,
+          [name]: value
+        }));
+      };
+
+      return (
+        <div className="controlled-form-wrapper">
+          <h2>Assignment 5: Controlled React Form</h2>
+          <p className="subtitle">
+            Accepts user inputs and displays the entered data in real-time below.
+          </p>
+
+          <form className="simple-form" onSubmit={(e) => e.preventDefault()}>
+            <div className="form-group">
+              <label htmlFor="formName">Name:</label>
+              <input
+                type="text"
+                id="formName"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="formEmail">Email:</label>
+              <input
+                type="email"
+                id="formEmail"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="formMessage">Message:</label>
+              <textarea
+                id="formMessage"
+                name="message"
+                rows="3"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Enter a short message"
+              />
+            </div>
+          </form>
+
+          <div className="live-display">
+            <h3>Real-Time Output:</h3>
+            <p><strong>Name:</strong> {formData.name || '---'}</p>
+            <p><strong>Email:</strong> {formData.email || '---'}</p>
+            <p><strong>Message:</strong> {formData.message || '---'}</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Component: CounterApp (Assignment 6)
+    function Assignment6() {
+      const [count, setCount] = useState(0);
+
+      const increment = () => setCount(count + 1);
+      const decrement = () => setCount(count - 1);
+      const reset = () => setCount(0);
+
+      return (
+        <div className="counter-wrapper">
+          <h2>Assignment 6: React Counter App</h2>
+          <p className="subtitle">
+            Uses React Hooks (<code>useState</code>) to increment, decrement, and reset value.
+          </p>
+
+          <div className="counter-display">
+            <span className="count-value">{count}</span>
+          </div>
+
+          <div className="button-group">
+            <button onClick={decrement} className="btn-counter btn-dec">Decrement (-)</button>
+            <button onClick={reset} className="btn-counter btn-rst">Reset</button>
+            <button onClick={increment} className="btn-counter btn-inc">Increment (+)</button>
+          </div>
+        </div>
+      );
+    }
+
+    // Main App with Tabs
+    function App() {
+      const getInitialTab = () => {
+        const hash = window.location.hash.toLowerCase();
+        if (hash === '#a5') return 'a5';
+        if (hash === '#a6') return 'a6';
+        return 'a4';
+      };
+
+      const [activeTab, setActiveTab] = useState(getInitialTab);
+
+      useEffect(() => {
+        const onHashChange = () => {
+          const hash = window.location.hash.toLowerCase();
+          if (hash === '#a5') setActiveTab('a5');
+          else if (hash === '#a6') setActiveTab('a6');
+          else if (hash === '#a4') setActiveTab('a4');
+        };
+        window.addEventListener('hashchange', onHashChange);
+        return () => window.removeEventListener('hashchange', onHashChange);
+      }, []);
+
+      const switchTab = (tab) => {
+        setActiveTab(tab);
+        window.location.hash = tab;
+      };
+
+      return (
+        <div className="app-container">
+          <header className="header">
+            <h1>React Lab Assignments</h1>
+            <nav className="nav-tabs">
+              <button
+                className={`tab-btn ${activeTab === 'a4' ? 'active' : ''}`}
+                onClick={() => switchTab('a4')}
+              >
+                Assignment 4: Profile Card (Props)
+              </button>
+              <button
+                className={`tab-btn ${activeTab === 'a5' ? 'active' : ''}`}
+                onClick={() => switchTab('a5')}
+              >
+                Assignment 5: Controlled Form
+              </button>
+              <button
+                className={`tab-btn ${activeTab === 'a6' ? 'active' : ''}`}
+                onClick={() => switchTab('a6')}
+              >
+                Assignment 6: Counter (useState)
+              </button>
+            </nav>
+          </header>
+
+          <main className="content">
+            {activeTab === 'a4' && <Assignment4 />}
+            {activeTab === 'a5' && <Assignment5 />}
+            {activeTab === 'a6' && <Assignment6 />}
+          </main>
+
+          <footer className="footer">
+            <a href="../index.html">← Back to All Assignments</a>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+
+</body>
+</html>

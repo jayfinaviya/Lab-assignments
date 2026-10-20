@@ -1,186 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>JavaScript Form Validation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 3: Form Validation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            padding-top: 50px;
-        }
+    body {
+      background-color: #f4f6f8;
+      color: #333333;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .form-container {
-            width: 400px;
-            background-color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-        }
+    .container {
+      max-width: 420px;
+      width: 100%;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
 
-        h2 {
-            text-align: center;
-        }
+    h2 {
+      font-size: 1.3rem;
+      color: #222222;
+      margin-bottom: 6px;
+      text-align: center;
+    }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-        }
+    .description {
+      font-size: 0.85rem;
+      color: #666666;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-        input {
-            width: 95%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    .form-group {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
 
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
+    label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #444;
+    }
 
-        button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: green;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    input {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      outline: none;
+    }
 
-        #success {
-            color: green;
-            text-align: center;
-            margin-top: 15px;
-        }
-    </style>
+    input:focus {
+      border-color: #0066cc;
+    }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.8rem;
+      min-height: 16px;
+    }
+
+    button#submitBtn {
+      width: 100%;
+      padding: 10px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background-color 0.15s;
+    }
+
+    button#submitBtn:hover {
+      background-color: #0052a3;
+    }
+
+    .success-msg {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #dcfce7;
+      color: #16a34a;
+      border: 1px solid #86efac;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      display: none;
+    }
+
+    .nav-links {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .nav-links a {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h2>Assignment 3: User Registration Form</h2>
+    <p class="description">Validates Name, Email, Phone, and Password using JavaScript.</p>
 
-    <div class="form-container">
+    <form id="regForm" onsubmit="return validateForm(event)">
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter your full name">
+        <span class="error-msg" id="nameError"></span>
+      </div>
 
-        <h2>User Registration</h2>
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" placeholder="Enter your email address">
+        <span class="error-msg" id="emailError"></span>
+      </div>
 
-        <form id="registrationForm">
+      <!-- Phone Field -->
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" placeholder="Enter 10-digit phone number">
+        <span class="error-msg" id="phoneError"></span>
+      </div>
 
-            <label>Name:</label>
-            <input type="text" id="name">
-            <div id="nameError" class="error"></div>
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password (min 8 chars)">
+        <span class="error-msg" id="passwordError"></span>
+      </div>
 
-            <label>Email:</label>
-            <input type="text" id="email">
-            <div id="emailError" class="error"></div>
+      <button type="submit" id="submitBtn">Register</button>
+    </form>
 
-            <label>Phone:</label>
-            <input type="text" id="phone">
-            <div id="phoneError" class="error"></div>
+    <div id="successMsg" class="success-msg"></div>
 
-            <label>Password:</label>
-            <input type="password" id="password">
-            <div id="passwordError" class="error"></div>
-
-            <button type="submit">Register</button>
-
-            <div id="success"></div>
-
-        </form>
-
+    <div class="nav-links">
+      <a href="../index.html">← Back to All Assignments</a>
     </div>
+  </div>
 
-    <script>
+  <script>
+    function validateForm(e) {
+      e.preventDefault();
 
-        // Get form
-        const form = document.getElementById("registrationForm");
+      let isValid = true;
 
-        // Form submit event
-        form.addEventListener("submit", function(event) {
+      // Get values
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-            // Prevent form from submitting
-            event.preventDefault();
+      // Clear previous errors
+      document.getElementById('nameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('phoneError').textContent = '';
+      document.getElementById('passwordError').textContent = '';
+      const successMsg = document.getElementById('successMsg');
+      successMsg.style.display = 'none';
 
-            // Get input values
-            const name = document.getElementById("name").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const phone = document.getElementById("phone").value.trim();
-            const password = document.getElementById("password").value;
+      // 1. Name validation
+      if (name === '') {
+        document.getElementById('nameError').textContent = 'Name is required';
+        isValid = false;
+      }
 
-            // Error elements
-            const nameError = document.getElementById("nameError");
-            const emailError = document.getElementById("emailError");
-            const phoneError = document.getElementById("phoneError");
-            const passwordError = document.getElementById("passwordError");
-            const success = document.getElementById("success");
+      // 2. Email validation
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (email === '') {
+        document.getElementById('emailError').textContent = 'Email is required';
+        isValid = false;
+      } else if (!email.match(emailPattern)) {
+        document.getElementById('emailError').textContent = 'Enter a valid email address';
+        isValid = false;
+      }
 
-            // Clear previous messages
-            nameError.textContent = "";
-            emailError.textContent = "";
-            phoneError.textContent = "";
-            passwordError.textContent = "";
-            success.textContent = "";
+      // 3. Phone validation (10 digits)
+      const phonePattern = /^[0-9]{10}$/;
+      if (phone === '') {
+        document.getElementById('phoneError').textContent = 'Phone number is required';
+        isValid = false;
+      } else if (!phone.match(phonePattern)) {
+        document.getElementById('phoneError').textContent = 'Enter a valid 10-digit phone number';
+        isValid = false;
+      }
 
-            let isValid = true;
+      // 4. Password validation (min 8 characters)
+      if (password === '') {
+        document.getElementById('passwordError').textContent = 'Password is required';
+        isValid = false;
+      } else if (password.length < 8) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters';
+        isValid = false;
+      }
 
-            // Name validation
-            if (name === "") {
-                nameError.textContent = "Name is required.";
-                isValid = false;
-            } 
-            else if (!/^[A-Za-z ]+$/.test(name)) {
-                nameError.textContent = "Name should contain only letters.";
-                isValid = false;
-            }
+      // Success
+      if (isValid) {
+        successMsg.textContent = 'Registration successful!';
+        successMsg.style.display = 'block';
+        document.getElementById('regForm').reset();
+      }
 
-            // Email validation
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (email === "") {
-                emailError.textContent = "Email is required.";
-                isValid = false;
-            } 
-            else if (!emailPattern.test(email)) {
-                emailError.textContent = "Enter a valid email address.";
-                isValid = false;
-            }
-
-            // Phone validation
-            const phonePattern = /^[0-9]{10}$/;
-
-            if (phone === "") {
-                phoneError.textContent = "Phone number is required.";
-                isValid = false;
-            } 
-            else if (!phonePattern.test(phone)) {
-                phoneError.textContent = "Phone number must contain 10 digits.";
-                isValid = false;
-            }
-
-            // Password validation
-            if (password === "") {
-                passwordError.textContent = "Password is required.";
-                isValid = false;
-            } 
-            else if (password.length < 8) {
-                passwordError.textContent =
-                    "Password must be at least 8 characters.";
-                isValid = false;
-            }
-
-            // Final result
-            if (isValid) {
-                success.textContent =
-                    "Registration successful!";
-            }
-
-        });
-
-    </script>
-
+      return false;
+    }
+  </script>
 </body>
 </html>

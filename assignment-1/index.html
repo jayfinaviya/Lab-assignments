@@ -1,49 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>JavaScript Calculator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 1: JavaScript Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f8;
+      color: #333;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      color: #222;
+      margin-bottom: 6px;
+    }
+
+    .description {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .calc-display {
+      width: 100%;
+      height: 50px;
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1.5rem;
+      text-align: right;
+      padding: 0 15px;
+      margin-bottom: 15px;
+      color: #1e293b;
+      outline: none;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background-color: #f8fafc;
+      color: #333;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+
+    .btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-op {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border-color: #bae6fd;
+    }
+
+    .btn-op:hover {
+      background-color: #bae6fd;
+    }
+
+    .btn-clear {
+      background-color: #fee2e2;
+      color: #dc2626;
+      border-color: #fca5a5;
+    }
+
+    .btn-clear:hover {
+      background-color: #fecaca;
+    }
+
+    .btn-equal {
+      background-color: #0066cc;
+      color: #ffffff;
+      border-color: #0066cc;
+    }
+
+    .btn-equal:hover {
+      background-color: #0052a3;
+    }
+
+    .btn-zero {
+      grid-column: span 2;
+    }
+
+    .nav-links {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .nav-links a {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Assignment 1: JavaScript Calculator</h2>
+    <p class="description">Basic arithmetic operations using JavaScript functions and a switch statement.</p>
 
-    <h2>Simple Calculator</h2>
+    <div class="calculator">
+      <!-- Calculator Display -->
+      <input type="text" id="display" class="calc-display" readonly value="0">
 
-    <script>
-        // Function to perform calculation
-        function calculator(num1, num2, operator) {
-            switch (operator) {
+      <!-- Calculator Buttons -->
+      <div class="buttons">
+        <button type="button" class="btn btn-clear" onclick="clearDisplay()">C</button>
+        <button type="button" class="btn" onclick="deleteLast()">DEL</button>
+        <button type="button" class="btn btn-op" onclick="setOperator('/')">/</button>
+        <button type="button" class="btn btn-op" onclick="setOperator('*')">*</button>
 
-                case '+':
-                    return num1 + num2;
+        <button type="button" class="btn" onclick="appendNumber('7')">7</button>
+        <button type="button" class="btn" onclick="appendNumber('8')">8</button>
+        <button type="button" class="btn" onclick="appendNumber('9')">9</button>
+        <button type="button" class="btn btn-op" onclick="setOperator('-')">-</button>
 
-                case '-':
-                    return num1 - num2;
+        <button type="button" class="btn" onclick="appendNumber('4')">4</button>
+        <button type="button" class="btn" onclick="appendNumber('5')">5</button>
+        <button type="button" class="btn" onclick="appendNumber('6')">6</button>
+        <button type="button" class="btn btn-op" onclick="setOperator('+')">+</button>
 
-                case '*':
-                    return num1 * num2;
+        <button type="button" class="btn" onclick="appendNumber('1')">1</button>
+        <button type="button" class="btn" onclick="appendNumber('2')">2</button>
+        <button type="button" class="btn" onclick="appendNumber('3')">3</button>
+        <button type="button" class="btn btn-equal" onclick="handleCalculate()">=</button>
 
-                case '/':
-                    if (num2 === 0) {
-                        return "Cannot divide by zero";
-                    }
-                    return num1 / num2;
+        <button type="button" class="btn btn-zero" onclick="appendNumber('0')">0</button>
+        <button type="button" class="btn" onclick="appendNumber('.')">.</button>
+      </div>
+    </div>
 
-                default:
-                    return "Invalid operator";
-            }
-        }
+    <div class="nav-links">
+      <a href="../index.html">← Back to All Assignments</a>
+    </div>
+  </div>
 
-        // Taking input from user
-        let num1 = Number(prompt("Enter first number:"));
-        let operator = prompt("Enter operator (+, -, *, /):");
-        let num2 = Number(prompt("Enter second number:"));
+  <script>
+    let currentInput = '0';
+    let previousInput = '';
+    let operation = null;
+    let shouldResetDisplay = false;
 
-        // Calling the function
-        let result = calculator(num1, num2, operator);
+    const display = document.getElementById('display');
 
-        // Display result
-        alert("Result = " + result);
-        document.write("<h3>Result = " + result + "</h3>");
-    </script>
+    function updateDisplay() {
+      display.value = currentInput;
+    }
 
+    function clearDisplay() {
+      currentInput = '0';
+      previousInput = '';
+      operation = null;
+      updateDisplay();
+    }
+
+    function deleteLast() {
+      if (currentInput.length === 1 || currentInput === 'Error: Divide by 0') {
+        currentInput = '0';
+      } else {
+        currentInput = currentInput.slice(0, -1);
+      }
+      updateDisplay();
+    }
+
+    function appendNumber(number) {
+      if (currentInput === '0' || shouldResetDisplay) {
+        currentInput = number;
+        shouldResetDisplay = false;
+      } else {
+        if (number === '.' && currentInput.includes('.')) return;
+        currentInput += number;
+      }
+      updateDisplay();
+    }
+
+    function setOperator(op) {
+      if (operation !== null) handleCalculate();
+      previousInput = currentInput;
+      operation = op;
+      shouldResetDisplay = true;
+    }
+
+    // Core calculator function using switch statement
+    function calculator(num1, num2, op) {
+      const n1 = parseFloat(num1);
+      const n2 = parseFloat(num2);
+      let result;
+
+      switch (op) {
+        case '+':
+          result = n1 + n2;
+          break;
+        case '-':
+          result = n1 - n2;
+          break;
+        case '*':
+          result = n1 * n2;
+          break;
+        case '/':
+          result = n2 !== 0 ? n1 / n2 : 'Error: Divide by 0';
+          break;
+        default:
+          result = 'Invalid operator';
+      }
+      return result;
+    }
+
+    function handleCalculate() {
+      if (operation === null || shouldResetDisplay) return;
+      const result = calculator(previousInput, currentInput, operation);
+      currentInput = String(result);
+      operation = null;
+      shouldResetDisplay = true;
+      updateDisplay();
+    }
+  </script>
 </body>
 </html>

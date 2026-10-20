@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 5: Controlled React Form</title>
+  <!-- React & Babel CDNs for instant GitHub Pages execution -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f8;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .controlled-form-wrapper {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .controlled-form-wrapper h2 {
+      color: #222;
+      text-align: center;
+      margin-bottom: 6px;
+      font-size: 1.3rem;
+    }
+
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+    }
+
+    .simple-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #0066cc;
+    }
+
+    .live-display {
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      text-align: left;
+    }
+
+    .live-display h3 {
+      font-size: 1rem;
+      color: #0066cc;
+      margin-bottom: 10px;
+    }
+
+    .live-display p {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .nav-links {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .nav-links a {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    function ControlledForm() {
+      // State holding form input values
+      const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+      });
+
+      // Handle changes for controlled inputs
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value
+        }));
+      };
+
+      return (
+        <div className="controlled-form-wrapper">
+          <h2>Assignment 5: Controlled React Form</h2>
+          <p className="subtitle">
+            Accepts user inputs and displays the entered data in real-time below the form.
+          </p>
+
+          {/* Form with Controlled Inputs */}
+          <form className="simple-form" onSubmit={(e) => e.preventDefault()}>
+            <div className="form-group">
+              <label htmlFor="formName">Name:</label>
+              <input
+                type="text"
+                id="formName"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="formEmail">Email:</label>
+              <input
+                type="email"
+                id="formEmail"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="formMessage">Message:</label>
+              <textarea
+                id="formMessage"
+                name="message"
+                rows="3"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Enter a short message"
+              />
+            </div>
+          </form>
+
+          {/* Real-time Display Below Form */}
+          <div className="live-display">
+            <h3>Real-Time Output:</h3>
+            <p><strong>Name:</strong> {formData.name || '---'}</p>
+            <p><strong>Email:</strong> {formData.email || '---'}</p>
+            <p><strong>Message:</strong> {formData.message || '---'}</p>
+          </div>
+
+          <div className="nav-links">
+            <a href="../index.html">← Back to All Assignments</a>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<ControlledForm />);
+  </script>
+
+</body>
+</html>

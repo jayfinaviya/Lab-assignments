@@ -1,142 +1,215 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>DOM Based To-Do List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 2: DOM-based To-Do List</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            padding-top: 50px;
-        }
+    body {
+      background-color: #f4f6f8;
+      color: #333333;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .todo-container {
-            background-color: white;
-            width: 400px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-        }
+    .container {
+      max-width: 450px;
+      width: 100%;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
 
-        h2 {
-            text-align: center;
-        }
+    h2 {
+      font-size: 1.3rem;
+      color: #222222;
+      margin-bottom: 6px;
+      text-align: center;
+    }
 
-        input {
-            width: 70%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    .description {
+      font-size: 0.85rem;
+      color: #666666;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-        #addBtn {
-            padding: 10px 15px;
-            background-color: green;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .input-section {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-        ul {
-            padding: 0;
-            list-style: none;
-        }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      font-size: 0.95rem;
+    }
 
-        li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #eee;
-            border-radius: 5px;
-        }
+    input[type="text"]:focus {
+      border-color: #0066cc;
+    }
 
-        .completed {
-            text-decoration: line-through;
-            color: gray;
-        }
+    button#addBtn {
+      padding: 10px 16px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.15s;
+    }
 
-        .deleteBtn {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
+    button#addBtn:hover {
+      background-color: #0052a3;
+    }
+
+    ul#taskList {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    li span.completed {
+      text-decoration: line-through;
+      color: #888888;
+    }
+
+    .btn-delete {
+      background-color: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .btn-delete:hover {
+      background-color: #fecaca;
+    }
+
+    .nav-links {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .nav-links a {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h2>Assignment 2: To-Do List</h2>
+    <p class="description">Add, mark completed, and delete tasks using DOM methods.</p>
 
-    <div class="todo-container">
-
-        <h2>My To-Do List</h2>
-
-        <input type="text" id="taskInput" placeholder="Enter a task">
-
-        <button id="addBtn">Add Task</button>
-
-        <ul id="taskList"></ul>
-
+    <!-- Input Section -->
+    <div class="input-section">
+      <input type="text" id="taskInput" placeholder="Enter a new task...">
+      <button id="addBtn" onclick="addTask()">Add Task</button>
     </div>
 
-    <script>
+    <!-- Task List -->
+    <ul id="taskList">
+      <!-- Tasks added dynamically via JavaScript DOM methods -->
+    </ul>
 
-        // Selecting HTML elements using DOM
-        const taskInput = document.getElementById("taskInput");
-        const addBtn = document.getElementById("addBtn");
-        const taskList = document.getElementById("taskList");
+    <div class="nav-links">
+      <a href="../index.html">← Back to All Assignments</a>
+    </div>
+  </div>
 
-        // Add task
-        addBtn.addEventListener("click", function() {
+  <script>
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const taskText = taskInput.value.trim();
 
-            const taskText = taskInput.value.trim();
+      if (taskText === '') {
+        alert('Please enter a task!');
+        return;
+      }
 
-            // Check if input is empty
-            if (taskText === "") {
-                alert("Please enter a task!");
-                return;
-            }
+      const taskList = document.getElementById('taskList');
 
-            // Create new list item
-            const li = document.createElement("li");
+      // Create new list item using DOM createElement
+      const li = document.createElement('li');
 
-            // Create task text
-            const span = document.createElement("span");
-            span.textContent = taskText;
+      // Create task span
+      const span = document.createElement('span');
+      span.textContent = taskText;
+      span.onclick = function() {
+        span.classList.toggle('completed');
+      };
 
-            // Mark task as completed
-            span.addEventListener("click", function() {
-                span.classList.toggle("completed");
-            });
+      // Create delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.className = 'btn-delete';
+      deleteBtn.onclick = function(e) {
+        e.stopPropagation();
+        li.remove();
+      };
 
-            // Create delete button
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
-            deleteBtn.classList.add("deleteBtn");
+      // Append elements using DOM appendChild
+      li.appendChild(span);
+      li.appendChild(deleteBtn);
+      taskList.appendChild(li);
 
-            // Delete task
-            deleteBtn.addEventListener("click", function() {
-                li.remove();
-            });
+      // Clear input
+      taskInput.value = '';
+      taskInput.focus();
+    }
 
-            // Add elements to list item
-            li.appendChild(span);
-            li.appendChild(deleteBtn);
+    // Allow Enter key to add task
+    document.getElementById('taskInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        addTask();
+      }
+    });
 
-            // Add list item to task list
-            taskList.appendChild(li);
-
-            // Clear input field
-            taskInput.value = "";
-        });
-
-    </script>
-
+    // Add sample task
+    window.onload = function() {
+      const taskInput = document.getElementById('taskInput');
+      taskInput.value = 'Complete MCA Lab Assignments';
+      addTask();
+    };
+  </script>
 </body>
 </html>
